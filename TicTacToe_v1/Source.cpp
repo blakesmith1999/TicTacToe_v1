@@ -17,7 +17,7 @@ public:
     }
     //        void set_user_sym(char sym){user_sym = sym;}
     //        void set_comp_sym(char sym){comp_sym = sym;}
-    //        void set_user_turn(bool turn){user_turn = turn;}
+    void next_turn(){user_turn = !user_turn;}
     void move(int x, int y, char sym) { board[x][y] = sym; }
 
     Game(char user, char comp, bool turn) {
@@ -25,8 +25,8 @@ public:
         comp_sym = comp;
         user_turn = turn;
 
-        for (int i = 0; i++; i < 2) {
-            for (int j = 0; j++; j < 2) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
                 board[i][j] = 'I';
             }
         }
@@ -41,18 +41,8 @@ int main() {
     initialize(user_sym, comp_sym, user_turn);
 
     Game game(user_sym, comp_sym, user_turn);
-    std::cout << "test\n";
-    char test = game.get_board_index(1, 1);
-    std::cout << test;
-
-    for (int i = 0; i++; i < 2) {
-        for (int j = 0; j++; j < 2) {
-            std::cout << game.get_board_index(i, j) << ' ';
-        }
-        std::cout << '\n';
-    }
-
-    //play(game);
+  
+    play(game);
 
 }
 
@@ -95,11 +85,35 @@ void initialize(char& user_sym, char& comp_sym, bool& user_turn) {
 }
 
 void play(Game& game) {
+    bool not_Over = true;
+    int row, col;
 
-    for (int i = 0; i++; i < 2) {
-        for (int j = 0; j++; j < 2) {
-            std::cout << game.get_board_index(i, j) + ' ';
+    while (not_Over) {
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                std::cout << game.get_board_index(i, j) << ' ';
+            }
+            std::cout << '\n';
         }
-        std::cout << '\n';
+
+        if (game.get_user_turn()) {
+            std::cout << "Please type the row (1,2,or3) you would like to make a move in and hit Enter: ";
+            std::cin >> row;
+            std::cout << "Please type the column (1,2,or3) you would like to make a move in and hit Enter: ";
+            std::cin >> col;
+            row--;
+            col--;
+            game.move(row, col, game.get_user_sym());
+            //game.next_turn();
+        }
+
+        if (!game.get_user_turn()) {
+            //AI goes here
+            //game.move(row, col, game.get_comp_sym());
+            //game.next_turn();
+        }
     }
+
+    
 }
